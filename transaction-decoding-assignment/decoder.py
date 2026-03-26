@@ -1,4 +1,5 @@
 import struct
+import json
 
 def read_varint(data, offset):
     prefix = data[offset]
@@ -106,4 +107,4 @@ tx_hex = "0200000000010131811cd355c357e0e01437d9bcf690df824e9ff785012b6115dfae3d
 
 decoded = decode_transaction(tx_hex)
 
-print(decoded)
+print(json.dumps(decoded, indent=2))
