@@ -1,11 +1,13 @@
 # Bitcoin Transaction Decoder Assignment Report
 
-## Assignment Overview 
+## Assignment Overview
 
-This assignment focuses on manually decoding a raw Bitcoin transaction hex and building a Python program that can automatically decode Bitcoin transactions. 
-The transaction used in this assignment is a **SegWit transaction**, meaning it includes a marker, flag, inputs, outputs, witness data, and locktime. 
+This assignment focuses on manually decoding a raw Bitcoin transaction hex and building a Python program that can automatically decode Bitcoin transactions.
+
+The transaction used in this assignment is a **SegWit transaction**, meaning it includes a marker, flag, inputs, outputs, witness data, and locktime.
+
 The main goal of this project was to understand how Bitcoin transactions are structured at the byte level and how they can be converted into a readable and meaningful format.
- ---
+
 
  ## Files Included in This Assignment
  - `manual-decode.md` -  contains the step-by-step manual decoding of the transaction
@@ -51,23 +53,21 @@ This is used to determine sizes such as the number of inputs, outputs, and scrip
  ---
 
  ### `decode_transaction(hex_string)` 
-This is the main function responsible for decoding the transaction. 
-**Step 1:** Convert the transaction hex string into raw bytes. 
-**Step 2:** Read the first 4 bytes as the transaction version using little-endian format.
- **Step 3:** Check the next two bytes to determine whether the transaction is SegWit.If the marker is `00` and the flag is `01`, the transaction is treated as a SegWit transaction. 
-**Step 4:** Read the number of inputs and process each input to extract:
- - previous transaction hash
-- previous output index
-- script length
-- script signature
-- sequence number
- The transaction hash is reversed because Bitcoin stores it in little-endian format. 
-**Step 5:** Read the number of outputs and process each output to extract:
- - amount in satoshis
-- script length
-- script public key
- **Step 6:** If the transaction is SegWit, read the witness data for each input.This data contains signatures and public keys used to validate the transaction.
- **Step 7:** Read the final 4 bytes as the locktime.
+The main decoding function follows these steps:
+
+1. **Convert** hex string to raw bytes
+2. **Read version** (first 4 bytes, little-endian)
+3. **Check SegWit** - if marker `00` and flag `01`, transaction is SegWit
+4. **Parse inputs** - extract for each input:
+   - Previous transaction hash which is reversed for little-endian
+   - Previous output index
+   - Script length and signature
+   - Sequence number
+5. **Parse outputs** - extract for each output:
+   - Amount in satoshis
+   - Script length and public key
+6. **Parse witness data** (for SegWit transactions)
+7. **Read locktime** (final 4 bytes)
  ---
 
  ## Little-Endian Format 
@@ -87,7 +87,7 @@ print(json.dumps(decoded, indent=2))
 
 ```
 
-## ## Validation and Output Analysis
+## Validation and Output Analysis
 
 After running the decoder, I compared the output against the actual Bitcoin transaction data to verify correctness.
 
@@ -109,7 +109,7 @@ The results confirm that the decoder is functioning accurately:
 
 Overall, the decoded output closely matches the real transaction structure found on the Bitcoin blockchain, confirming the correctness of the decoder.
 
-## ## Test Transaction
+## Test Transaction
 
 I tested the decoder using the provided transaction hex.
 
@@ -128,21 +128,33 @@ The program successfully decoded:
 * locktime
  
 
-## ## How to Run the Program
+## How to Run the Program
+```bash
+# Run the decoder
+python3 decoder.py
 
-To run the decoder: python3 decoder.py
+# Save output to file
+python3 decoder.py > output.txt
+```
+## Output
 
-To save the output into a file: python3 decoder.py > output.txt
+The decoded transaction is printed as a structured Python dictionary in JSON format:
 
-## ## Output
+{
+  "version": 2,
+  "marker": "00",
+  "flag": "01",
+  "inputs": [...],
+  "outputs": [...],
+  "witness": [...],
+  "locktime": ...
+}
 
-The decoded transaction is printed as a structured Python dictionary in JSON format: { "version": 2, "marker": "00", "flag": "01", "inputs": [...], "outputs": [...], "witness": [...], "locktime": ... }
-
-## #### **Small Observation***
+#### **Small Observation**
 
 For SegWit transactions, the `scriptSig` field is empty. This is expected because SegWit stores validation data in the witness section instead.
 
-## ## What I Learned from doing the assignment
+## What I Learned from doing the assignment
 
 Through this assignment, I learned:
 
