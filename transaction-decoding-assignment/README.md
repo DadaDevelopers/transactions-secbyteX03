@@ -139,7 +139,7 @@ python3 decoder.py > output.txt
 ## Output
 
 The decoded transaction is printed as a structured Python dictionary in JSON format:
-
+```json
 {
   "version": 2,
   "marker": "00",
@@ -149,7 +149,7 @@ The decoded transaction is printed as a structured Python dictionary in JSON for
   "witness": [...],
   "locktime": ...
 }
-
+```
 #### **Small Observation**
 
 For SegWit transactions, the `scriptSig` field is empty. This is expected because SegWit stores validation data in the witness section instead.
